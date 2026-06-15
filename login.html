@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAFFIA - Iniciar Sesión</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .chinese-bg {
+            background-image: url('25.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        /* ── Página centrada ── */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 460px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* ── Logo / Header ── */
+        .auth-header {
+            text-align: center;
+            background: rgba(10, 5, 0, 0.82);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            border-radius: 18px;
+            padding: 30px 24px 24px;
+            box-shadow: 0 0 30px rgba(180, 30, 50, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-header::before {
+            content: "龙";
+            font-size: 90px;
+            position: absolute;
+            opacity: 0.05;
+            right: 10px;
+            top: 0;
+            font-family: serif;
+            color: #c9a227;
+        }
+
+        .auth-logo-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .auth-dragon {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(180,30,50,0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.45);
+            animation: dragonGlow 3s ease-in-out infinite;
+        }
+
+        .auth-dragon img {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(212,175,55,0.8));
+        }
+
+        .auth-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            background: linear-gradient(135deg, #d4af37, #c41e3a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .auth-subtitle {
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            color: rgba(201,162,39,0.7);
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* ── Card de formulario ── */
+        .auth-card {
+            background: rgba(10, 5, 0, 0.82);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(201, 162, 39, 0.25);
+            border-radius: 18px;
+            padding: 32px 28px;
+            box-shadow: 0 0 30px rgba(180, 30, 50, 0.2);
+        }
+
+        .auth-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: #c9a227;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auth-card-title i {
+            font-size: 18px;
+        }
+
+        .auth-card-desc {
+            font-size: 12px;
+            color: rgba(245,245,245,0.55);
+            margin-bottom: 26px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Inputs ── */
+        .auth-field {
+            margin-bottom: 18px;
+        }
+
+        .auth-field label {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(201,162,39,0.85);
+            margin-bottom: 7px;
+            font-weight: 500;
+        }
+
+        .auth-input-wrap {
+            position: relative;
+        }
+
+        .auth-input-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(201,162,39,0.6);
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        .auth-input-wrap input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(201,162,39,0.25);
+            border-radius: 8px;
+            padding: 11px 40px 11px 40px;
+            color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            transition: border-color 0.25s, box-shadow 0.25s;
+            outline: none;
+        }
+
+        .auth-input-wrap input:focus {
+            border-color: #c9a227;
+            box-shadow: 0 0 12px rgba(201,162,39,0.2);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .auth-input-wrap input::placeholder {
+            color: rgba(245,245,245,0.3);
+        }
+
+        /* Toggle contraseña */
+        .toggle-pass {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(201,162,39,0.5);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0;
+            transition: color 0.2s;
+        }
+
+        .toggle-pass:hover { color: #c9a227; }
+
+        /* ── Botón principal ── */
+        .btn-auth {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #c9a227, #a07820);
+            border: none;
+            border-radius: 8px;
+            color: #1a0a00;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-auth::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-auth:hover::before { left: 100%; }
+
+        .btn-auth:hover {
+            background: linear-gradient(135deg, #e3bb38, #c9a227);
+            box-shadow: 0 5px 20px rgba(201,162,39,0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-auth:active { transform: translateY(0); }
+
+        .btn-auth:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── Link cambiar entre login/registro ── */
+        .auth-switch {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(245,245,245,0.5);
+            margin-top: 20px;
+        }
+
+        .auth-switch a {
+            color: #c9a227;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .auth-switch a:hover { color: #e3bb38; text-decoration: underline; }
+
+        /* ── Mensaje de error / éxito ── */
+        .auth-msg {
+            padding: 11px 14px;
+            border-radius: 7px;
+            font-size: 12px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .auth-msg.error {
+            display: flex;
+            background: rgba(196,30,58,0.15);
+            border: 1px solid rgba(196,30,58,0.4);
+            color: #ff6b6b;
+        }
+
+        .auth-msg.success {
+            display: flex;
+            background: rgba(76,175,80,0.12);
+            border: 1px solid rgba(76,175,80,0.35);
+            color: #81c784;
+        }
+
+        /* ── Cuentas de demo ── */
+        .demo-accounts {
+            background: rgba(201,162,39,0.06);
+            border: 1px solid rgba(201,162,39,0.15);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-top: 20px;
+        }
+
+        .demo-accounts h5 {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(201,162,39,0.7);
+            margin-bottom: 10px;
+        }
+
+        .demo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 11px;
+        }
+
+        .demo-item:last-child { border-bottom: none; }
+
+        .demo-rol {
+            background: rgba(201,162,39,0.15);
+            color: #c9a227;
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .demo-creds {
+            color: rgba(245,245,245,0.5);
+            font-size: 10px;
+        }
+
+        .demo-btn-fill {
+            background: none;
+            border: none;
+            color: rgba(201,162,39,0.6);
+            cursor: pointer;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .demo-btn-fill:hover {
+            background: rgba(201,162,39,0.1);
+            color: #c9a227;
+        }
+
+        /* ── Loading spinner ── */
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(26,10,0,0.4);
+            border-top-color: #1a0a00;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes dragonGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(212,175,55,0.3); }
+            50% { box-shadow: 0 0 35px rgba(212,175,55,0.8); }
+        }
+    </style>
+</head>
+<body>
+    <div class="chinese-bg"></div>
+
+    <div class="auth-page">
+        <div class="auth-wrapper">
+
+            <!-- Header Logo -->
+            <div class="auth-header">
+                <div class="auth-logo-row">
+                    <div class="auth-dragon">
+                        <img src="e.png" alt="Dragon MAFFIA">
+                    </div>
+                    <span class="auth-brand">MAFFIA</span>
+                </div>
+                <p class="auth-subtitle">Sistema de Gestión Restaurante Oriental</p>
+            </div>
+
+            <!-- Card Login -->
+            <div class="auth-card">
+                <h2 class="auth-card-title">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </h2>
+                <p class="auth-card-desc">Accede con tu correo y contraseña</p>
+
+                <!-- Mensaje error/éxito -->
+                <div class="auth-msg" id="loginMsg"></div>
+
+                <!-- Formulario -->
+                <div class="auth-field">
+                    <label for="loginCorreo"><i class="fas fa-envelope"></i> &nbsp;Correo electrónico</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginCorreo" placeholder="tucorreo@email.com" autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label for="loginPass"><i class="fas fa-lock"></i> &nbsp;Contraseña</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPass" placeholder="Tu contraseña" autocomplete="current-password">
+                        <button class="toggle-pass" onclick="togglePass('loginPass', this)" type="button">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="btn-auth" id="btnLogin" onclick="iniciarSesion()">
+                    <i class="fas fa-sign-in-alt"></i> &nbsp;Ingresar
+                </button>
+
+                <!-- Cuentas demo -->
+                <div class="demo-accounts">
+                    <h5><i class="fas fa-info-circle"></i> &nbsp;Cuentas de acceso rápido</h5>
+                    <div class="demo-item">
+                        <span class="demo-rol">Admin</span>
+                        <span class="demo-creds">admin@maffia.com / admin123</span>
+                        <button class="demo-btn-fill" onclick="fillDemo('admin@maffia.com','admin123')">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="demo-item">
+                        <span class="demo-rol">Mozo</span>
+                        <span class="demo-creds">mozo@maffia.com / mozo123</span>
+                        <button class="demo-btn-fill" onclick="fillDemo('mozo@maffia.com','mozo123')">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="demo-item">
+                        <span class="demo-rol">Cocina</span>
+                        <span class="demo-creds">cocina@maffia.com / cocina123</span>
+                        <button class="demo-btn-fill" onclick="fillDemo('cocina@maffia.com','cocina123')">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="auth-switch">
+                    ¿No tienes cuenta? <a href="registro.html">Registrarse</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Si ya hay sesión activa, redirigir
+        if (Auth.estaAutenticado()) {
+            window.location.href = 'index.html';
+        }
+
+        function mostrarMsg(id, texto, tipo) {
+            const el = document.getElementById(id);
+            el.className = 'auth-msg ' + tipo;
+            el.innerHTML = `<i class="fas fa-${tipo === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${texto}`;
+        }
+
+        function togglePass(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        function fillDemo(correo, pass) {
+            document.getElementById('loginCorreo').value = correo;
+            document.getElementById('loginPass').value = pass;
+            document.getElementById('loginMsg').className = 'auth-msg';
+        }
+
+        function iniciarSesion() {
+            const correo = document.getElementById('loginCorreo').value.trim();
+            const pass = document.getElementById('loginPass').value;
+            const btn = document.getElementById('btnLogin');
+
+            if (!correo || !pass) {
+                mostrarMsg('loginMsg', 'Por favor completa todos los campos.', 'error');
+                return;
+            }
+
+            // Loading
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Verificando...';
+
+            setTimeout(() => {
+                const usuario = Auth.buscarPorCorreo(correo);
+
+                if (!usuario) {
+                    mostrarMsg('loginMsg', 'Correo no registrado en el sistema.', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> &nbsp;Ingresar';
+                    return;
+                }
+
+                if (usuario.estado === 'Pendiente') {
+                    mostrarMsg('loginMsg', 'Tu cuenta está pendiente de verificación. Revisa tu correo.', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> &nbsp;Ingresar';
+                    return;
+                }
+
+                if (btoa(pass) !== usuario.contrasena) {
+                    mostrarMsg('loginMsg', 'Contraseña incorrecta. Inténtalo de nuevo.', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> &nbsp;Ingresar';
+                    return;
+                }
+
+                // Éxito
+                mostrarMsg('loginMsg', `Bienvenido, ${usuario.nombre}! Redirigiendo...`, 'success');
+                Auth.setSesion(usuario);
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+
+            }, 700);
+        }
+
+        // Enter para login
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Enter') iniciarSesion();
+        });
+    </script>
+</body>
+</html>

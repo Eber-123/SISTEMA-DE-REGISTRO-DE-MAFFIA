@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAFFIA - Generar Cuenta</title>
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="cuenta.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <style>
+        body {
+            background-image: url('25.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="bg-overlay"></div>
+    <div class="bg-pattern"></div>
+    <div class="corner-deco top-left"><i class="fas fa-dragon"></i></div>
+    <div class="corner-deco top-right"><i class="fas fa-torii-gate"></i></div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <img src="e.png" alt="MAFFIA Logo" class="navbar-logo">
+            <div class="navbar-brand-text">
+                <span class="brand-name">MAFFIA</span>
+                <span class="brand-sub">Sistema de Gestión Restaurante Oriental</span>
+            </div>
+        </a>
+        <ul class="navbar-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
+            <li><a href="platos.html"><i class="fas fa-utensils"></i> <span>Platos</span></a></li>
+            <li><a href="pedidos.html"><i class="fas fa-clipboard-list"></i> <span>Pedidos</span></a></li>
+            <li><a href="cocina.html"><i class="fas fa-fire-burner"></i> <span>Cocina</span></a></li>
+            <li><a href="cuenta.html" class="active"><i class="fas fa-receipt"></i> <span>Cuenta</span></a></li>
+        </ul>
+    </nav>
+    <!-- ===== END NAVBAR ===== -->
+
+    <main class="main-content">
+
+        <div class="module-title-area">
+            <div class="module-icon"><i class="fas fa-receipt"></i></div>
+            <div>
+                <h2 class="module-title">Generar Cuenta</h2>
+                <p class="module-subtitle">Facturación y cierre de cuenta por pedido</p>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="nueva-cuenta">
+                <i class="fas fa-plus-circle"></i> Nueva Cuenta
+            </button>
+            <button class="tab-btn" data-tab="cuentas-guardadas">
+                <i class="fas fa-history"></i> Cuentas Guardadas
+            </button>
+        </div>
+
+        <!-- ══════════════════════════════════════
+             TAB: NUEVA CUENTA
+        ══════════════════════════════════════ -->
+        <div id="tab-nueva-cuenta" class="tab-content">
+
+            <!-- PASO 1: BUSCAR MESA -->
+            <section class="cuenta-card" id="paso-mesa">
+                <div class="card-header">
+                    <span class="step-badge">1</span>
+                    <h3><i class="fas fa-table"></i> Seleccionar Mesa</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="input-mesa">Número de Mesa</label>
+                            <div class="input-icon-wrap">
+                                <i class="fas fa-chair"></i>
+                                <input type="number" id="input-mesa" placeholder="Ej: 5" min="1" max="50">
+                            </div>
+                            <span class="field-error" id="error-mesa"></span>
+                        </div>
+                        <div class="form-group btn-group-inline">
+                            <button class="btn-primary" id="btn-buscar-mesa">
+                                <i class="fas fa-search"></i> Buscar Pedidos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PASO 2: PEDIDOS DE LA MESA (selección individual) -->
+            <section class="cuenta-card hidden" id="paso-pedidos">
+                <div class="card-header">
+                    <span class="step-badge">2</span>
+                    <h3><i class="fas fa-clipboard-check"></i> Pedidos Entregados</h3>
+                    <span class="mesa-badge" id="label-mesa-seleccionada"></span>
+                </div>
+                <div class="card-body">
+                    <p class="hint-text"><i class="fas fa-info-circle"></i> Seleccione el o los pedidos que desea facturar en esta cuenta.</p>
+                    <div id="lista-pedidos-mesa"></div>
+                    <span class="field-error" id="error-seleccion"></span>
+                    <div class="btn-area" style="margin-top:1rem">
+                        <button class="btn-primary" id="btn-generar-resumen">
+                            <i class="fas fa-arrow-right"></i> Generar Resumen
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PASO 3: RESUMEN Y PAGO -->
+            <section class="cuenta-card hidden" id="paso-pago">
+                <div class="card-header">
+                    <span class="step-badge">3</span>
+                    <h3><i class="fas fa-cash-register"></i> Resumen y Pago</h3>
+                    <span class="estado-cuenta-badge" id="badge-estado-cuenta">
+                        <i class="fas fa-clock"></i> Pendiente de pago
+                    </span>
+                </div>
+                <div class="card-body">
+
+                    <!-- DETALLE DE CONSUMO -->
+                    <div class="resumen-consumo">
+                        <h4 class="resumen-title"><i class="fas fa-list-alt"></i> Detalle de Consumo</h4>
+                        <div id="tabla-resumen-items"></div>
+
+                        <!-- CÁLCULOS -->
+                        <div class="calculos-area">
+                            <div class="calculo-row">
+                                <span>Subtotal</span>
+                                <span id="val-subtotal">S/ 0.00</span>
+                            </div>
+
+                            <!-- DESCUENTO -->
+                            <div class="calculo-row descuento-row">
+                                <div class="descuento-toggle">
+                                    <label class="switch-label">
+                                        <input type="checkbox" id="chk-descuento">
+                                        <span class="switch-slider"></span>
+                                        Aplicar descuento
+                                    </label>
+                                </div>
+                                <span id="val-descuento" class="descuento-valor">- S/ 0.00</span>
+                            </div>
+                            <div id="descuento-form" class="descuento-fields hidden">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Tipo de descuento</label>
+                                        <select id="tipo-descuento">
+                                            <option value="monto">Monto fijo (S/)</option>
+                                            <option value="porcentaje">Porcentaje (%)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Valor del descuento</label>
+                                        <input type="number" id="input-descuento" placeholder="0.00" min="0" step="0.01">
+                                        <span class="field-error" id="error-descuento"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Justificación del descuento <span class="required">*</span></label>
+                                    <textarea id="input-justificacion-desc" placeholder="Explique el motivo del descuento (mínimo 10 caracteres)..." maxlength="200"></textarea>
+                                    <span class="field-error" id="error-justificacion-desc"></span>
+                                </div>
+                            </div>
+
+                            <!-- IGV -->
+                            <div class="calculo-row">
+                                <label class="switch-label">
+                                    <input type="checkbox" id="chk-igv" checked>
+                                    <span class="switch-slider"></span>
+                                    IGV (18%)
+                                </label>
+                                <span id="val-igv">S/ 0.00</span>
+                            </div>
+
+                            <div class="calculo-divider"></div>
+                            <div class="calculo-row total-row">
+                                <span><i class="fas fa-coins"></i> TOTAL FINAL</span>
+                                <span id="val-total">S/ 0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MÉTODO DE PAGO -->
+                    <div class="pago-area">
+                        <h4 class="resumen-title"><i class="fas fa-wallet"></i> Método de Pago</h4>
+
+                        <div class="metodos-pago">
+                            <label class="metodo-option">
+                                <input type="radio" name="metodo-pago" value="Efectivo">
+                                <span class="metodo-card">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span>Efectivo</span>
+                                </span>
+                            </label>
+                            <label class="metodo-option">
+                                <input type="radio" name="metodo-pago" value="Tarjeta">
+                                <span class="metodo-card">
+                                    <i class="fas fa-credit-card"></i>
+                                    <span>Tarjeta</span>
+                                </span>
+                            </label>
+                            <label class="metodo-option">
+                                <input type="radio" name="metodo-pago" value="Yape">
+                                <span class="metodo-card">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <span>Yape</span>
+                                </span>
+                            </label>
+                            <label class="metodo-option">
+                                <input type="radio" name="metodo-pago" value="Plin">
+                                <span class="metodo-card">
+                                    <i class="fas fa-qrcode"></i>
+                                    <span>Plin</span>
+                                </span>
+                            </label>
+                            <label class="metodo-option">
+                                <input type="radio" name="metodo-pago" value="Transferencia">
+                                <span class="metodo-card">
+                                    <i class="fas fa-university"></i>
+                                    <span>Transferencia</span>
+                                </span>
+                            </label>
+                        </div>
+                        <span class="field-error" id="error-metodo-pago"></span>
+
+                        <!-- CAMPOS: EFECTIVO -->
+                        <div id="fields-efectivo" class="pago-fields hidden">
+                            <div class="pago-fields-header"><i class="fas fa-money-bill-wave"></i> Datos de pago en efectivo</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Monto recibido (S/)</label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-hand-holding-usd"></i>
+                                        <input type="number" id="input-monto-recibido" placeholder="0.00" min="0" step="0.01">
+                                    </div>
+                                    <span class="field-error" id="error-monto-recibido"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Vuelto</label>
+                                    <div class="input-icon-wrap vuelto-display">
+                                        <i class="fas fa-coins"></i>
+                                        <input type="text" id="display-vuelto" placeholder="S/ 0.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CAMPOS: TARJETA -->
+                        <div id="fields-tarjeta" class="pago-fields hidden">
+                            <div class="pago-fields-header"><i class="fas fa-credit-card"></i> Datos de la tarjeta</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Tipo de tarjeta</label>
+                                    <select id="tarjeta-tipo">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Visa">Visa</option>
+                                        <option value="Mastercard">Mastercard</option>
+                                        <option value="American Express">American Express</option>
+                                        <option value="Débito">Débito</option>
+                                    </select>
+                                    <span class="field-error" id="error-tarjeta-tipo"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Últimos 4 dígitos</label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-hashtag"></i>
+                                        <input type="text" id="tarjeta-ultimos4" placeholder="Ej: 1234" maxlength="4">
+                                    </div>
+                                    <span class="field-error" id="error-tarjeta-ultimos4"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Número de operación / voucher</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fas fa-file-alt"></i>
+                                    <input type="text" id="tarjeta-voucher" placeholder="Ej: OP-20240504-001" maxlength="30">
+                                </div>
+                                <span class="field-error" id="error-tarjeta-voucher"></span>
+                            </div>
+                        </div>
+
+                        <!-- 1. CAMPOS: YAPE -->
+                        <div id="fields-yape" class="pago-fields hidden">
+                            <div class="pago-fields-header"><i class="fas fa-mobile-alt"></i> Registro de Yape</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nombre del Cliente</label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="yape-nombre" placeholder="Nombre en captura">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Número de Operación</label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-hashtag"></i>
+                                        <input type="text" id="yape-codigo" placeholder="Ej: 854210" maxlength="8">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- 2. CAMPOS: PLIN -->
+                        <div id="fields-plin" class="pago-fields hidden">
+                            <div class="pago-fields-header"><i class="fas fa-qrcode"></i> Registro de Plin</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Celular del Cliente</label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-phone"></i>
+                                        <input type="text" id="plin-celular" placeholder="987..." maxlength="9">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Número de Operación</label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-receipt"></i>
+                                        <input type="text" id="plin-codigo" placeholder="Ej: 457812" maxlength="10">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- 3. CAMPOS: TRANSFERENCIA -->
+                        <div id="fields-transferencia" class="pago-fields hidden">
+                            <div class="pago-fields-header"><i class="fas fa-university"></i> Confirmación Bancaria</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Banco Origen</label>
+                                    <select id="transf-banco">
+                                        <option value="BCP">BCP</option>
+                                        <option value="Interbank">Interbank</option>
+                                        <option value="BBVA">BBVA</option>
+                                        <option value="Scotiabank">Scotiabank</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nro. Operación</label>
+                                    <div class="input-icon-wrap">
+                                        <i class="fas fa-file-invoice"></i>
+                                        <input type="text" id="transf-operacion" placeholder="Referencia">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BOTONES -->
+                        <div class="btn-area">
+                            <button class="btn-secondary" id="btn-cancelar-cuenta">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                            <button class="btn-primary btn-confirm" id="btn-confirmar-pago">
+                                <i class="fas fa-check-circle"></i> Confirmar Pago
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ══════════════════════════════════════
+             TAB: CUENTAS GUARDADAS
+        ══════════════════════════════════════ -->
+        <div id="tab-cuentas-guardadas" class="tab-content hidden">
+            <section class="cuenta-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-archive"></i> Historial de Facturas</h3>
+                    <div class="header-actions">
+                        <div class="search-wrap">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="buscador-facturas" placeholder="Buscar por mesa o código...">
+                        </div>
+                        <select id="filtro-estado-factura">
+                            <option value="">Todos los estados</option>
+                            <option value="Pagada">Pagada</option>
+                            <option value="Pendiente de pago">Pendiente de pago</option>
+                            <option value="Anulada">Anulada</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="lista-facturas"></div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- MODAL: TICKET -->
+    <div id="modal-ticket" class="modal-overlay hidden">
+        <div class="modal-box">
+            <div class="ticket-header">
+                <div class="ticket-logo"><i class="fas fa-dragon"></i></div>
+                <h3>MAFFIA</h3>
+                <p>Restaurante Oriental</p>
+                <div class="ticket-line"></div>
+            </div>
+            <div id="ticket-contenido"></div>
+            <div class="ticket-footer">
+                <div class="ticket-line"></div>
+                <p>¡Gracias por su visita!</p>
+                <p class="ticket-slogan">Experiencia Auténtica</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="btn-cerrar-ticket">
+                    <i class="fas fa-times"></i> Cerrar
+                </button>
+                <button class="btn-primary" id="btn-imprimir-ticket">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ANULAR -->
+    <div id="modal-anular" class="modal-overlay hidden">
+        <div class="modal-box modal-small">
+            <div class="modal-header-warn">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Anular Factura</h3>
+            </div>
+            <p>¿Está seguro de anular esta factura? Esta acción no se puede deshacer.</p>
+            <div class="form-group">
+                <label>Motivo de anulación <span class="required">*</span></label>
+                <textarea id="input-motivo-anulacion" placeholder="Ingrese el motivo (mínimo 10 caracteres)..." maxlength="200"></textarea>
+                <span class="field-error" id="error-motivo-anulacion"></span>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="btn-cancelar-anulacion">Cancelar</button>
+                <button class="btn-danger" id="btn-confirmar-anulacion">Anular Factura</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast hidden">
+        <i class="toast-icon fas fa-check-circle"></i>
+        <span id="toast-msg"></span>
+    </div>
+
+    <footer class="main-footer">
+        <p>© 2027 MAFFIA Restaurante Oriental – Experiencia Auténtica</p>
+    </footer>
+
+    <script src="cuenta.js"></script>
+</body>
+</html>

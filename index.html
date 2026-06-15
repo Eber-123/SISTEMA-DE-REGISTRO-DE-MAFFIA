@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAFFIA - Sistema de Gestión Restaurante Oriental</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .chinese-bg {
+            background-image: url('25.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        /* ── Barra de usuario (top) ── */
+        .user-bar {
+            position: fixed;
+            top: 0; right: 0; left: 0;
+            height: 52px;
+            background: rgba(10, 5, 0, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(201,162,39,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 9999;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+        }
+
+        .user-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-bar-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #d4af37, #c41e3a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .user-bar-sep {
+            width: 1px; height: 20px;
+            background: rgba(201,162,39,0.25);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-avatar {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(201,162,39,0.3), rgba(180,30,50,0.3));
+            border: 1px solid rgba(201,162,39,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #c9a227;
+            font-weight: 700;
+        }
+
+        .user-name {
+            font-size: 12px;
+            color: rgba(245,245,245,0.85);
+            font-weight: 500;
+        }
+
+        .user-rol-badge {
+            background: rgba(201,162,39,0.15);
+            border: 1px solid rgba(201,162,39,0.3);
+            color: #c9a227;
+            font-size: 9px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid rgba(196,30,58,0.35);
+            color: rgba(255,100,100,0.8);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-logout:hover {
+            background: rgba(196,30,58,0.15);
+            border-color: rgba(196,30,58,0.6);
+            color: #ff6b6b;
+        }
+
+        /* Ajuste del container para dejar espacio al user-bar */
+        .container {
+            padding-top: 72px !important;
+        }
+
+        /* ── Tarjetas ocultas por rol ── */
+        .nav-card[data-rol-requerido] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="chinese-bg"></div>
+
+    <!-- Barra de usuario -->
+    <div class="user-bar">
+        <div class="user-bar-left">
+            <span class="user-bar-logo">MAFFIA</span>
+            <div class="user-bar-sep"></div>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">?</div>
+                <span class="user-name" id="userName">Cargando...</span>
+                <span class="user-rol-badge" id="userRol">—</span>
+            </div>
+        </div>
+        <button class="btn-logout" onclick="Auth.cerrarSesion()">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </button>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <div class="dragon-logo">
+                    <img src="e.png" alt="Dragón Realista" class="dragon-img">
+                </div>
+                <h1>MAFFIA</h1>
+            </div>
+            <p class="subtitle">Sistema de Gestión Restaurante Oriental</p>
+        </header>
+
+        <nav class="main-nav" id="mainNav">
+            <!-- Platos: Admin -->
+            <a href="platos.html" class="nav-card" data-roles="Administrador">
+                <i class="fas fa-utensils"></i>
+                <h3>Registro de Platos</h3>
+                <p>Gestionar menú y productos</p>
+                <div class="nav-glow"></div>
+            </a>
+            <!-- Pedidos: Admin, Mozo, Cliente -->
+            <a href="pedidos.html" class="nav-card" data-roles="Administrador,Mozo,Cliente">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>Pedidos</h3>
+                <p>Crear y gestionar pedidos</p>
+                <div class="nav-glow"></div>
+            </a>
+            <!-- Cocina: Admin, Cocinero -->
+            <a href="cocina.html" class="nav-card cocina-card" data-roles="Administrador,Cocinero">
+                <i class="fas fa-fire"></i>
+                <h3>Control de Cocina</h3>
+                <p>Estado de preparación</p>
+                <div class="nav-glow"></div>
+            </a>
+            <!-- Cuenta: Admin, Mozo -->
+            <a href="cuenta.html" class="nav-card" data-roles="Administrador,Mozo">
+                <i class="fas fa-receipt"></i>
+                <h3>Generar Cuenta</h3>
+                <p>Facturación final</p>
+                <div class="nav-glow"></div>
+            </a>
+        </nav>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <i class="fas fa-drumstick-bite"></i>
+                <div class="stat-info">
+                    <h4>Platos Activos</h4>
+                    <span id="totalPlatos">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-shopping-cart"></i>
+                <div class="stat-info">
+                    <h4>Pedidos Activos</h4>
+                    <span id="totalPedidos">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-info">
+                    <h4>En Cocina</h4>
+                    <span id="enCocina">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle"></i>
+                <div class="stat-info">
+                    <h4>Listos</h4>
+                    <span id="listos">0</span>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2027 MAFFIA Restaurante Oriental - Experiencia Auténtica</p>
+        </footer>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // ── Proteger página ──
+        if (!Auth.estaAutenticado()) {
+            window.location.href = 'login.html';
+        } else {
+            const sesion = Auth.getSesion();
+
+            // Rellenar barra de usuario
+            document.getElementById('userName').textContent = sesion.nombre + ' ' + (sesion.apellidos || '');
+            document.getElementById('userRol').textContent = sesion.rol;
+            document.getElementById('userAvatar').textContent = (sesion.nombre || '?')[0].toUpperCase();
+
+            // Mostrar solo tarjetas permitidas para el rol
+            const rol = sesion.rol;
+            document.querySelectorAll('.nav-card[data-roles]').forEach(card => {
+                const rolesPermitidos = card.getAttribute('data-roles').split(',');
+                card.style.display = rolesPermitidos.includes(rol) ? 'block' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
