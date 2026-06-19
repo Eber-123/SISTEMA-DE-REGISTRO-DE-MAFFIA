@@ -1,0 +1,168 @@
+/* ============================================================
+   navbar.css - Barra de navegación global
+   MAFFIA Restaurante Oriental
+   Incluir en TODAS las páginas: <link rel="stylesheet" href="navbar.css">
+   ============================================================ */
+
+.navbar {
+    width: 100%;
+    background: linear-gradient(135deg, #1a0a00 0%, #2d1200 50%, #1a0a00 100%);
+    border-bottom: 2px solid #c9a227;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(201, 162, 39, 0.2);
+}
+
+/* ── Brand / Logo ── */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+}
+
+.navbar-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid #c9a227;
+    object-fit: cover;
+    background: #000;
+}
+
+.navbar-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.navbar-brand-text .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #c9a227;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.navbar-brand-text .brand-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 300;
+    color: #a07820;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+}
+
+/* ── Links ── */
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #c9a227;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+    position: relative;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+    background: rgba(201, 162, 39, 0.12);
+    color: #ebe9e2;
+}
+
+.navbar-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #eceae4;
+    transition: width 0.25s;
+}
+
+.navbar-links a:hover::after,
+.navbar-links a.active::after {
+    width: 60%;
+}
+
+.navbar-links a i {
+    font-size: 0.85rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .navbar {
+        padding: 0 1rem;
+        height: 64px;
+    }
+
+    .navbar-brand-text .brand-sub {
+        display: none;
+    }
+
+    .navbar-links a span {
+        display: none;
+    }
+
+    .navbar-links a {
+        padding: 0.5rem 0.65rem;
+    }
+}
+.plato-obs-extras {
+    margin-top: 8px;
+    padding: 8px;
+    background: rgba(76,175,80,0.1);
+    border-left: 3px solid #4caf50;
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 12px;
+}
+
+.plato-obs-extras i {
+    color: #4caf50;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.obs-extra-tag {
+    background: rgba(76,175,80,0.2);
+    color: #4caf50;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid #4caf50;
+    font-weight: 500;
+}
+
+.obs-extra-tag strong {
+    color: #ff9800;
+    margin-left: 4px;
+}

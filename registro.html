@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAFFIA - Registrarse</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .chinese-bg {
+            background-image: url('25.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 20px;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* ── Header ── */
+        .auth-header {
+            text-align: center;
+            background: rgba(10, 5, 0, 0.82);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(201,162,39,0.3);
+            border-radius: 18px;
+            padding: 26px 24px 20px;
+            box-shadow: 0 0 30px rgba(180,30,50,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-header::before {
+            content: "龙";
+            font-size: 90px;
+            position: absolute;
+            opacity: 0.05;
+            right: 10px;
+            top: 0;
+            font-family: serif;
+            color: #c9a227;
+        }
+
+        .auth-logo-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 6px;
+        }
+
+        .auth-dragon {
+            width: 54px; height: 54px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(212,175,55,0.2), rgba(180,30,50,0.2));
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 25px rgba(212,175,55,0.45);
+            animation: dragonGlow 3s ease-in-out infinite;
+        }
+
+        .auth-dragon img {
+            width: 44px; height: 44px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 8px rgba(212,175,55,0.8));
+        }
+
+        .auth-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            background: linear-gradient(135deg, #d4af37, #c41e3a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .auth-subtitle {
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            color: rgba(201,162,39,0.7);
+            text-transform: uppercase;
+        }
+
+        /* ── Card ── */
+        .auth-card {
+            background: rgba(10, 5, 0, 0.82);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(201,162,39,0.25);
+            border-radius: 18px;
+            padding: 30px 28px;
+            box-shadow: 0 0 30px rgba(180,30,50,0.2);
+        }
+
+        /* ── Steps ── */
+        .steps-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 26px;
+        }
+
+        .step-dot {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+            border: 2px solid rgba(201,162,39,0.25);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(201,162,39,0.5);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-dot.active {
+            background: rgba(201,162,39,0.2);
+            border-color: #c9a227;
+            color: #c9a227;
+            box-shadow: 0 0 12px rgba(201,162,39,0.3);
+        }
+
+        .step-dot.done {
+            background: rgba(76,175,80,0.2);
+            border-color: #4caf50;
+            color: #4caf50;
+        }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: rgba(201,162,39,0.15);
+            max-width: 60px;
+            transition: background 0.3s;
+        }
+
+        .step-line.done { background: rgba(76,175,80,0.4); }
+
+        /* ── Título ── */
+        .auth-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: #c9a227;
+            margin-bottom: 4px;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .auth-card-desc {
+            font-size: 12px;
+            color: rgba(245,245,245,0.5);
+            margin-bottom: 22px;
+        }
+
+        /* ── Inputs ── */
+        .auth-field { margin-bottom: 15px; }
+
+        .auth-field label {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(201,162,39,0.8);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .auth-input-wrap { position: relative; }
+
+        .auth-input-wrap > i:first-child {
+            position: absolute;
+            left: 13px; top: 50%;
+            transform: translateY(-50%);
+            color: rgba(201,162,39,0.55);
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        .auth-input-wrap input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(201,162,39,0.22);
+            border-radius: 8px;
+            padding: 11px 38px 11px 38px;
+            color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            transition: border-color 0.25s, box-shadow 0.25s;
+            outline: none;
+        }
+
+        .auth-input-wrap input:focus {
+            border-color: #c9a227;
+            box-shadow: 0 0 12px rgba(201,162,39,0.18);
+            background: rgba(255,255,255,0.07);
+        }
+
+        .auth-input-wrap input::placeholder { color: rgba(245,245,245,0.28); }
+
+        .auth-input-wrap input.error-input { border-color: rgba(196,30,58,0.6); }
+
+        .toggle-pass {
+            position: absolute;
+            right: 12px; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none;
+            color: rgba(201,162,39,0.45);
+            cursor: pointer; font-size: 13px; padding: 0;
+            transition: color 0.2s;
+        }
+
+        .toggle-pass:hover { color: #c9a227; }
+
+        /* Fila de 2 campos */
+        .auth-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* Indicador fortaleza contraseña */
+        .pass-strength {
+            margin-top: 6px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .strength-bar {
+            flex: 1; height: 3px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+
+        .strength-bar.weak { background: #e53935; }
+        .strength-bar.medium { background: #ff9800; }
+        .strength-bar.strong { background: #4caf50; }
+
+        .pass-hint {
+            font-size: 10px;
+            color: rgba(245,245,245,0.4);
+            margin-top: 4px;
+        }
+
+        /* ── Botón ── */
+        .btn-auth {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #c9a227, #a07820);
+            border: none; border-radius: 8px;
+            color: #1a0a00;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 6px;
+            position: relative; overflow: hidden;
+        }
+
+        .btn-auth::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-auth:hover::before { left: 100%; }
+
+        .btn-auth:hover {
+            background: linear-gradient(135deg, #e3bb38, #c9a227);
+            box-shadow: 0 5px 20px rgba(201,162,39,0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-auth:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+        .btn-auth-outline {
+            width: 100%;
+            padding: 11px;
+            background: transparent;
+            border: 1px solid rgba(201,162,39,0.35);
+            border-radius: 8px;
+            color: #c9a227;
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px; font-weight: 600;
+            letter-spacing: 1px; text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-top: 10px;
+        }
+
+        .btn-auth-outline:hover {
+            background: rgba(201,162,39,0.08);
+            border-color: #c9a227;
+        }
+
+        /* ── Mensajes ── */
+        .auth-msg {
+            padding: 10px 13px;
+            border-radius: 7px;
+            font-size: 12px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+
+        .auth-msg.error {
+            display: flex;
+            background: rgba(196,30,58,0.13);
+            border: 1px solid rgba(196,30,58,0.38);
+            color: #ff6b6b;
+        }
+
+        .auth-msg.success {
+            display: flex;
+            background: rgba(76,175,80,0.1);
+            border: 1px solid rgba(76,175,80,0.32);
+            color: #81c784;
+        }
+
+        .auth-msg.info {
+            display: flex;
+            background: rgba(201,162,39,0.1);
+            border: 1px solid rgba(201,162,39,0.3);
+            color: #c9a227;
+        }
+
+        /* ── Panel de verificación ── */
+        .verify-panel {
+            text-align: center;
+        }
+
+        .code-display {
+            background: rgba(201,162,39,0.08);
+            border: 2px dashed rgba(201,162,39,0.35);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 18px 0;
+        }
+
+        .code-display p {
+            font-size: 11px;
+            color: rgba(245,245,245,0.5);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .code-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            letter-spacing: 10px;
+            color: #c9a227;
+            text-shadow: 0 0 20px rgba(201,162,39,0.5);
+            font-weight: 700;
+        }
+
+        .code-input-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 18px 0;
+        }
+
+        .code-digit {
+            width: 46px; height: 54px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(201,162,39,0.25);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #c9a227;
+            font-family: 'Playfair Display', serif;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .code-digit:focus {
+            border-color: #c9a227;
+            box-shadow: 0 0 12px rgba(201,162,39,0.3);
+        }
+
+        .code-digit.filled {
+            background: rgba(201,162,39,0.1);
+            border-color: rgba(201,162,39,0.6);
+        }
+
+        /* ── Link switch ── */
+        .auth-switch {
+            text-align: center;
+            font-size: 12px;
+            color: rgba(245,245,245,0.45);
+            margin-top: 18px;
+        }
+
+        .auth-switch a {
+            color: #c9a227;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-switch a:hover { text-decoration: underline; }
+
+        /* ── Spinner ── */
+        .spinner {
+            display: inline-block;
+            width: 13px; height: 13px;
+            border: 2px solid rgba(26,10,0,0.4);
+            border-top-color: #1a0a00;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes dragonGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(212,175,55,0.3); }
+            50% { box-shadow: 0 0 35px rgba(212,175,55,0.8); }
+        }
+
+        /* Éxito final */
+        .success-panel {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            color: #4caf50;
+            margin-bottom: 16px;
+            animation: popIn 0.5s ease;
+            text-shadow: 0 0 20px rgba(76,175,80,0.5);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-panel h3 {
+            font-family: 'Playfair Display', serif;
+            color: #c9a227;
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .success-panel p {
+            font-size: 13px;
+            color: rgba(245,245,245,0.6);
+            margin-bottom: 22px;
+        }
+
+        /* Ocultar secciones */
+        .step-section { display: none; }
+        .step-section.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="chinese-bg"></div>
+
+    <div class="auth-page">
+        <div class="auth-wrapper">
+
+            <!-- Header -->
+            <div class="auth-header">
+                <div class="auth-logo-row">
+                    <div class="auth-dragon">
+                        <img src="e.png" alt="Dragon MAFFIA">
+                    </div>
+                    <span class="auth-brand">MAFFIA</span>
+                </div>
+                <p class="auth-subtitle">Sistema de Gestión Restaurante Oriental</p>
+            </div>
+
+            <!-- Card -->
+            <div class="auth-card">
+
+                <!-- Barra de pasos -->
+                <div class="steps-bar" id="stepsBar">
+                    <div class="step-dot active" id="sDot1"><i class="fas fa-user"></i></div>
+                    <div class="step-line" id="sLine1"></div>
+                    <div class="step-dot" id="sDot2"><i class="fas fa-envelope"></i></div>
+                    <div class="step-line" id="sLine2"></div>
+                    <div class="step-dot" id="sDot3"><i class="fas fa-check"></i></div>
+                </div>
+
+                <!-- Mensaje general -->
+                <div class="auth-msg" id="regMsg"></div>
+
+                <!-- ══ PASO 1: Datos personales ══ -->
+                <div class="step-section active" id="step1">
+                    <h2 class="auth-card-title"><i class="fas fa-user-plus"></i> Crear cuenta</h2>
+                    <p class="auth-card-desc">Completa tus datos para registrarte como cliente</p>
+
+                    <div class="auth-row">
+                        <div class="auth-field">
+                            <label>Nombres</label>
+                            <div class="auth-input-wrap">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="regNombre" placeholder="Juan">
+                            </div>
+                        </div>
+                        <div class="auth-field">
+                            <label>Apellidos</label>
+                            <div class="auth-input-wrap">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="regApellidos" placeholder="Pérez">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="auth-field">
+                        <label>Correo electrónico</label>
+                        <div class="auth-input-wrap">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="regCorreo" placeholder="tucorreo@email.com">
+                        </div>
+                    </div>
+
+                    <div class="auth-field">
+                        <label>Celular</label>
+                        <div class="auth-input-wrap">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" id="regCelular" placeholder="987 654 321" maxlength="12">
+                        </div>
+                    </div>
+
+                    <div class="auth-field">
+                        <label>Contraseña</label>
+                        <div class="auth-input-wrap">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="regPass" placeholder="Mínimo 6 caracteres" oninput="checkStrength(this.value)">
+                            <button class="toggle-pass" onclick="togglePass('regPass', this)" type="button">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="pass-strength">
+                            <div class="strength-bar" id="sb1"></div>
+                            <div class="strength-bar" id="sb2"></div>
+                            <div class="strength-bar" id="sb3"></div>
+                        </div>
+                        <p class="pass-hint" id="passHint">Ingresa una contraseña</p>
+                    </div>
+
+                    <div class="auth-field">
+                        <label>Confirmar contraseña</label>
+                        <div class="auth-input-wrap">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="regPassConfirm" placeholder="Repite tu contraseña">
+                            <button class="toggle-pass" onclick="togglePass('regPassConfirm', this)" type="button">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="btn-auth" id="btnPaso1" onclick="irPaso2()">
+                        <i class="fas fa-arrow-right"></i> &nbsp;Continuar
+                    </button>
+
+                    <div class="auth-switch">
+                        ¿Ya tienes cuenta? <a href="login.html">Iniciar Sesión</a>
+                    </div>
+                </div>
+
+                <!-- ══ PASO 2: Verificación de correo ══ -->
+                <div class="step-section" id="step2">
+                    <h2 class="auth-card-title"><i class="fas fa-envelope-open-text"></i> Verificar correo</h2>
+                    <p class="auth-card-desc">Te enviamos un código de 6 dígitos</p>
+
+                    <div class="verify-panel">
+                        <p style="font-size:13px; color:rgba(245,245,245,0.6);">
+                            Código enviado a <strong id="correoMostrado" style="color:#c9a227;"></strong>
+                        </p>
+
+                        <!-- Código simulado (en producción esto iría por email) -->
+                        <div class="code-display">
+                            <p><i class="fas fa-envelope"></i> &nbsp;Código de verificación</p>
+                            <div class="code-number" id="codigoDisplay">------</div>
+                            <p style="margin-top:8px; font-size:10px; color:rgba(201,162,39,0.5);">
+                                (Simulado — en producción llegaría a tu correo)
+                            </p>
+                        </div>
+
+                        <p style="font-size:12px; color:rgba(245,245,245,0.5); margin-bottom:4px;">
+                            Ingresa el código:
+                        </p>
+
+                        <div class="code-input-row" id="codeInputs">
+                            <input class="code-digit" maxlength="1" type="text" pattern="[0-9]" inputmode="numeric">
+                            <input class="code-digit" maxlength="1" type="text" pattern="[0-9]" inputmode="numeric">
+                            <input class="code-digit" maxlength="1" type="text" pattern="[0-9]" inputmode="numeric">
+                            <input class="code-digit" maxlength="1" type="text" pattern="[0-9]" inputmode="numeric">
+                            <input class="code-digit" maxlength="1" type="text" pattern="[0-9]" inputmode="numeric">
+                            <input class="code-digit" maxlength="1" type="text" pattern="[0-9]" inputmode="numeric">
+                        </div>
+
+                        <button class="btn-auth" id="btnVerificar" onclick="verificarCodigo()">
+                            <i class="fas fa-check-circle"></i> &nbsp;Verificar Código
+                        </button>
+
+                        <button class="btn-auth-outline" onclick="reenviarCodigo()">
+                            <i class="fas fa-redo"></i> &nbsp;Reenviar código
+                        </button>
+                    </div>
+
+                    <div class="auth-switch" style="margin-top:16px;">
+                        <a href="#" onclick="volverPaso1()"><i class="fas fa-arrow-left"></i> Volver</a>
+                    </div>
+                </div>
+
+                <!-- ══ PASO 3: Éxito ══ -->
+                <div class="step-section" id="step3">
+                    <div class="success-panel">
+                        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                        <h3>¡Cuenta activada!</h3>
+                        <p>Tu cuenta fue verificada correctamente.<br>Ya puedes ingresar al sistema.</p>
+                        <button class="btn-auth" onclick="window.location.href='login.html'">
+                            <i class="fas fa-sign-in-alt"></i> &nbsp;Ir a Iniciar Sesión
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Si ya hay sesión, redirigir
+        if (Auth.estaAutenticado()) {
+            window.location.href = 'index.html';
+        }
+
+        let codigoGenerado = null;
+
+        // ── Helpers ──
+        function mostrarMsg(texto, tipo) {
+            const el = document.getElementById('regMsg');
+            el.className = 'auth-msg ' + tipo;
+            const icons = { error: 'exclamation-circle', success: 'check-circle', info: 'info-circle' };
+            el.innerHTML = `<i class="fas fa-${icons[tipo] || 'info-circle'}"></i> ${texto}`;
+        }
+
+        function ocultarMsg() {
+            document.getElementById('regMsg').className = 'auth-msg';
+        }
+
+        function togglePass(id, btn) {
+            const input = document.getElementById(id);
+            const icon = btn.querySelector('i');
+            input.type = input.type === 'password' ? 'text' : 'password';
+            icon.className = input.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+        }
+
+        // ── Indicador fortaleza ──
+        function checkStrength(pass) {
+            const sb = [document.getElementById('sb1'), document.getElementById('sb2'), document.getElementById('sb3')];
+            const hint = document.getElementById('passHint');
+            sb.forEach(b => b.className = 'strength-bar');
+
+            if (pass.length === 0) { hint.textContent = 'Ingresa una contraseña'; return; }
+            if (pass.length < 4) {
+                sb[0].classList.add('weak');
+                hint.textContent = 'Muy corta'; hint.style.color = '#e53935';
+            } else if (pass.length < 8 || !/[A-Z]/.test(pass)) {
+                sb[0].classList.add('medium'); sb[1].classList.add('medium');
+                hint.textContent = 'Aceptable — agrega mayúsculas'; hint.style.color = '#ff9800';
+            } else {
+                sb[0].classList.add('strong'); sb[1].classList.add('strong'); sb[2].classList.add('strong');
+                hint.textContent = 'Contraseña fuerte ✓'; hint.style.color = '#4caf50';
+            }
+        }
+
+        // ── Step navigation ──
+        function setStep(n) {
+            document.querySelectorAll('.step-section').forEach((s, i) => {
+                s.classList.toggle('active', i === n - 1);
+            });
+            // dots
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById('sDot' + i);
+                dot.classList.remove('active', 'done');
+                if (i < n) dot.classList.add('done');
+                else if (i === n) dot.classList.add('active');
+            }
+            // lines
+            for (let i = 1; i <= 2; i++) {
+                const line = document.getElementById('sLine' + i);
+                line.classList.toggle('done', i < n);
+            }
+            ocultarMsg();
+        }
+
+        function volverPaso1() {
+            setStep(1);
+        }
+
+        // ── Paso 1 → 2 ──
+        function irPaso2() {
+            const nombre    = document.getElementById('regNombre').value.trim();
+            const apellidos = document.getElementById('regApellidos').value.trim();
+            const correo    = document.getElementById('regCorreo').value.trim();
+            const celular   = document.getElementById('regCelular').value.trim();
+            const pass      = document.getElementById('regPass').value;
+            const passConf  = document.getElementById('regPassConfirm').value;
+
+            if (!nombre || !apellidos || !correo || !celular || !pass || !passConf) {
+                mostrarMsg('Por favor completa todos los campos.', 'error');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(correo)) {
+                mostrarMsg('Ingresa un correo electrónico válido.', 'error');
+                return;
+            }
+
+            if (pass.length < 6) {
+                mostrarMsg('La contraseña debe tener al menos 6 caracteres.', 'error');
+                return;
+            }
+
+            if (pass !== passConf) {
+                mostrarMsg('Las contraseñas no coinciden.', 'error');
+                return;
+            }
+
+            // Verificar si ya existe
+            if (Auth.buscarPorCorreo(correo)) {
+                mostrarMsg('Este correo ya está registrado. <a href="login.html" style="color:#c9a227">Inicia sesión</a>', 'error');
+                return;
+            }
+
+            // Guardar datos temporalmente
+            window._regTemp = { nombre, apellidos, correo, celular, pass };
+
+            // Generar código 6 dígitos
+            codigoGenerado = String(Math.floor(100000 + Math.random() * 900000));
+
+            // Mostrar
+            document.getElementById('correoMostrado').textContent = correo;
+            document.getElementById('codigoDisplay').textContent = codigoGenerado;
+
+            // Limpiar inputs código
+            document.querySelectorAll('.code-digit').forEach(d => {
+                d.value = '';
+                d.classList.remove('filled');
+            });
+
+            setStep(2);
+
+            // Auto-foco primer dígito
+            setTimeout(() => document.querySelector('.code-digit').focus(), 200);
+        }
+
+        // ── Inputs código: navegación automática ──
+        document.addEventListener('DOMContentLoaded', () => {
+            const digits = document.querySelectorAll('.code-digit');
+            digits.forEach((input, idx) => {
+                input.addEventListener('input', () => {
+                    input.value = input.value.replace(/[^0-9]/g, '');
+                    if (input.value) {
+                        input.classList.add('filled');
+                        if (idx < digits.length - 1) digits[idx + 1].focus();
+                    } else {
+                        input.classList.remove('filled');
+                    }
+                });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !input.value && idx > 0) {
+                        digits[idx - 1].focus();
+                    }
+                });
+            });
+        });
+
+        // ── Verificar código ──
+        function verificarCodigo() {
+            const digits = document.querySelectorAll('.code-digit');
+            const ingresado = Array.from(digits).map(d => d.value).join('');
+
+            if (ingresado.length < 6) {
+                mostrarMsg('Ingresa los 6 dígitos del código.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('btnVerificar');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Verificando...';
+
+            setTimeout(() => {
+                if (ingresado !== codigoGenerado) {
+                    mostrarMsg('Código incorrecto. Inténtalo de nuevo.', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-check-circle"></i> &nbsp;Verificar Código';
+                    document.querySelectorAll('.code-digit').forEach(d => {
+                        d.value = ''; d.classList.remove('filled');
+                    });
+                    document.querySelector('.code-digit').focus();
+                    return;
+                }
+
+                // Registrar usuario
+                const datos = window._regTemp;
+                const usuarios = Auth.getUsuarios();
+                const nuevoId = usuarios.length > 0 ? Math.max(...usuarios.map(u => u.id)) + 1 : 1;
+
+                usuarios.push({
+                    id: nuevoId,
+                    nombre: datos.nombre,
+                    apellidos: datos.apellidos,
+                    correo: datos.correo,
+                    celular: datos.celular,
+                    contrasena: btoa(datos.pass),
+                    rol: 'Cliente',
+                    estado: 'Activo',
+                    fechaRegistro: new Date().toISOString()
+                });
+
+                Auth.setUsuarios(usuarios);
+                window._regTemp = null;
+                codigoGenerado = null;
+
+                setStep(3);
+
+            }, 800);
+        }
+
+        // ── Reenviar código ──
+        function reenviarCodigo() {
+            codigoGenerado = String(Math.floor(100000 + Math.random() * 900000));
+            document.getElementById('codigoDisplay').textContent = codigoGenerado;
+            document.querySelectorAll('.code-digit').forEach(d => { d.value = ''; d.classList.remove('filled'); });
+            document.querySelector('.code-digit').focus();
+            mostrarMsg('Código reenviado correctamente.', 'info');
+        }
+    </script>
+</body>
+</html>

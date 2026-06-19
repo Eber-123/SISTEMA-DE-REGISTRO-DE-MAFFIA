@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Platos - Walok</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="navbar.css">
+    <style>
+        body {
+            background-image: url('25.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <img src="e.png" alt="MAFFIA Logo" class="navbar-logo">
+            <div class="navbar-brand-text">
+                <span class="brand-name">MAFFIA</span>
+                <span class="brand-sub">Sistema de Gestión Restaurante Oriental</span>
+            </div>
+        </a>
+        <ul class="navbar-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> <span>Inicio</span></a></li>
+            <li><a href="platos.html" class="active"><i class="fas fa-utensils"></i> <span>Platos</span></a></li>
+            <li><a href="pedidos.html"><i class="fas fa-clipboard-list"></i> <span>Pedidos</span></a></li>
+            <li><a href="cocina.html"><i class="fas fa-fire-burner"></i> <span>Cocina</span></a></li>
+            <li><a href="cuenta.html"><i class="fas fa-receipt"></i> <span>Cuenta</span></a></li>
+        </ul>
+    </nav>
+    <!-- ===== END NAVBAR ===== -->
+
+    <div class="container">
+        <header class="header">
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Inicio</a>
+            <div class="logo-container">
+                <i class="fas fa-utensils"></i>
+                <h1>Registro de Platos</h1>
+            </div>
+            <p class="subtitle">Gestión completa del menú oriental</p>
+        </header>
+
+        <div class="module-content">
+            <!-- Formulario de registro -->
+            <div class="form-container">
+                <h2><i class="fas fa-plus-circle"></i> Registrar Nuevo Plato</h2>
+                <form id="platoForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-barcode"></i> Código del Plato *</label>
+                            <input type="text" id="codigo" placeholder="Ej: PL001" maxlength="10">
+                            <small class="error-message" id="codigoError"></small>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-tag"></i> Nombre del Plato *</label>
+                            <input type="text" id="nombre" placeholder="Ej: Lomo saltado" maxlength="60">
+                            <small class="error-message" id="nombreError"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-align-left"></i> Descripción *</label>
+                        <textarea id="descripcion" rows="3" placeholder="Describa el plato, sus ingredientes principales y características..."></textarea>
+                        <small class="error-message" id="descripcionError"></small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-list"></i> Categoría *</label>
+                            <select id="categoria">
+                                <option value="">Seleccione una categoría</option>
+                                <option value="Entrada">🥢 Entrada</option>
+                                <option value="Plato de fondo">🍚 Plato de fondo</option>
+                                <option value="Postre">🍡 Postre</option>
+                                <option value="Bebida">🍵 Bebida</option>
+                                <option value="Menú ejecutivo">🥡 Menú ejecutivo</option>
+                                <option value="Especial de la casa">🐉 Especial de la casa</option>
+                            </select>
+                            <small class="error-message" id="categoriaError"></small>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-dollar-sign"></i> Precio (S/) *</label>
+                            <input type="number" id="precio" step="0.01" placeholder="0.00">
+                            <small class="error-message" id="precioError"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-hourglass-half"></i> Tiempo preparación (min) *</label>
+                            <input type="number" id="tiempo" placeholder="15">
+                            <small class="error-message" id="tiempoError"></small>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-toggle-on"></i> Estado *</label>
+                            <select id="estado">
+                                <option value="Activo">✅ Activo</option>
+                                <option value="Inactivo">❌ Inactivo</option>
+                            </select>
+                            <small class="error-message" id="estadoError"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-allergies"></i> Alérgenos *</label>
+                        <div class="alergenos-group">
+                            <label><input type="checkbox" class="alergeno" value="Gluten"> Gluten</label>
+                            <label><input type="checkbox" class="alergeno" value="Lactosa"> Lactosa</label>
+                            <label><input type="checkbox" class="alergeno" value="Maní"> Maní</label>
+                            <label><input type="checkbox" class="alergeno" value="Mariscos"> Mariscos</label>
+                            <label><input type="checkbox" class="alergeno" value="Huevo"> Huevo</label>
+                            <label><input type="checkbox" class="alergeno" value="Soya"> Soya</label>
+                            <label><input type="checkbox" class="alergeno" value="Frutos secos"> Frutos secos</label>
+                            <label><input type="checkbox" class="alergeno" value="Ninguno"> Ninguno</label>
+                            <label><input type="checkbox" class="alergeno" value="Otro"> Otro</label>
+                        </div>
+                        <input type="text" id="otroAlergeno" placeholder="Especifique otro alérgeno" style="display:none; margin-top:10px;">
+                        <small class="error-message" id="alergenosError"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-edit"></i> Ingredientes modificables *</label>
+                        <textarea id="modificable" rows="2" placeholder="Ej: Puede pedirse sin cebolla, puede cambiar arroz por ensalada, no permite modificaciones..."></textarea>
+                        <small class="error-message" id="modificableError"></small>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Guardar Plato</button>
+                        <button type="button" id="cancelarEdicion" class="btn-secondary" style="display:none;"><i class="fas fa-times"></i> Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Listado y filtros -->
+            <div class="list-container">
+                <div class="filters">
+                    <input type="text" id="buscarInput" placeholder="🔍 Buscar por nombre o categoría...">
+                    <select id="filtroEstado">
+                        <option value="todos">Todos los platos</option>
+                        <option value="Activo">Activos</option>
+                        <option value="Inactivo">Inactivos</option>
+                    </select>
+                </div>
+                <div id="platosList" class="items-list"></div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2027 MAFFIA Restaurante Oriental - Módulo de Platos</p>
+        </footer>
+    </div>
+
+    <script src="platos.js"></script>
+</body>
+</html>
